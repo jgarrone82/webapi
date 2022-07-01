@@ -22,6 +22,7 @@ namespace webapi.Controllers
           helloworldService = helloWord;
        }  
 
+      [HttpGet]
        public IActionResult Get()
        {
             return Ok(helloworldService.GetHelloWorld());
