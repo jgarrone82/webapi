@@ -12,13 +12,14 @@ namespace webapi.Controllers
     [ApiController]
     [Route("[controller]")]
     public class HelloWorldController : ControllerBase
-    {
-       
+    {       
        IHelloWordService helloworldService;
-
-       public HelloWorldController(IHelloWordService helloWord)
-       {
-            helloworldService = helloWord;
+       private readonly ILogger<HelloWorldController> _logger;
+       public HelloWorldController(IHelloWordService helloWord, ILogger<HelloWorldController> logger)
+       {         
+          _logger = logger; 
+          _logger.LogInformation("Creating the injection");
+          helloworldService = helloWord;
        }  
 
        public IActionResult Get()
