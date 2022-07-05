@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using webapi.Models;
 using webapi.Services;
 
 namespace webapi.Controllers
@@ -14,12 +15,14 @@ namespace webapi.Controllers
     public class HelloWorldController : ControllerBase
     {       
        IHelloWordService helloworldService;
+       TaskContext dbContext;
        private readonly ILogger<HelloWorldController> _logger;
-       public HelloWorldController(IHelloWordService helloWord, ILogger<HelloWorldController> logger)
+       public HelloWorldController(IHelloWordService helloWord, ILogger<HelloWorldController> logger, TaskContext db)
        {         
           _logger = logger; 
           _logger.LogInformation("Creating the injection");
           helloworldService = helloWord;
+          dbContext = db;
        }  
 
       [HttpGet]
@@ -27,5 +30,13 @@ namespace webapi.Controllers
        {
             return Ok(helloworldService.GetHelloWorld());
        }     
+
+       [HttpGet]
+       [Route("createdb")]
+       public IActionResult CreateDatabase()
+       {
+         dbContext.Database.EnsureCreated();
+         return Ok();
+       }
     }
 }
